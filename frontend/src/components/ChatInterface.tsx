@@ -5,6 +5,7 @@ import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 
 const ChatInterface: React.FC = () => {
+  console.log('ChatInterface component rendered');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -25,16 +26,27 @@ const ChatInterface: React.FC = () => {
       content,
     };
     
+    console.log('Current messages before adding user message:', messages);
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
 
     try {
+      console.log('Sending messages to API:', [...messages, userMessage]);
       const response: ChatResponse = await sendChatMessage(
         [...messages, userMessage],
         executeCode
       );
-
-      setMessages((prev) => [...prev, response.message]);
+      
+      console.log('Received response from API:', response);
+      const assistantMessage = {
+        ...response.message,
+        code_execution: response.code_execution
+      };
+      
+      setMessages((prev) => {
+        console.log('Updating messages with response:', [...prev, assistantMessage]);
+        return [...prev, assistantMessage];
+      });
     } catch (error) {
       console.error('Error sending message:', error);
       
@@ -68,17 +80,11 @@ const ChatInterface: React.FC = () => {
         ) : (
           <div className="divide-y divide-gray-800">
             {messages.map((message, index) => {
-              const nextMessage = messages[index + 1];
-              const isAssistantWithCodeExec = 
-                message.role === 'assistant' && 
-                nextMessage && 
-                nextMessage.role === 'assistant';
-              
               return (
                 <ChatMessage 
                   key={index} 
                   message={message} 
-                  codeExecution={isAssistantWithCodeExec ? undefined : undefined}
+                  codeExecution={message.role === 'assistant' && message.code_execution ? message.code_execution : undefined}
                 />
               );
             })}
