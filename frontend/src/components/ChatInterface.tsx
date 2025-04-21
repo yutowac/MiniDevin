@@ -68,17 +68,11 @@ const ChatInterface: React.FC = () => {
         ) : (
           <div className="divide-y divide-gray-800">
             {messages.map((message, index) => {
-              const nextMessage = messages[index + 1];
-              const isAssistantWithCodeExec = 
-                message.role === 'assistant' && 
-                nextMessage && 
-                nextMessage.role === 'assistant';
-              
               return (
                 <ChatMessage 
                   key={index} 
                   message={message} 
-                  codeExecution={isAssistantWithCodeExec ? undefined : undefined}
+                  codeExecution={undefined} // We'll handle code execution in a separate PR
                 />
               );
             })}
