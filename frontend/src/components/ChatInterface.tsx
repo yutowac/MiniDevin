@@ -38,9 +38,14 @@ const ChatInterface: React.FC = () => {
       );
       
       console.log('Received response from API:', response);
+      const assistantMessage = {
+        ...response.message,
+        code_execution: response.code_execution
+      };
+      
       setMessages((prev) => {
-        console.log('Updating messages with response:', [...prev, response.message]);
-        return [...prev, response.message];
+        console.log('Updating messages with response:', [...prev, assistantMessage]);
+        return [...prev, assistantMessage];
       });
     } catch (error) {
       console.error('Error sending message:', error);
@@ -79,7 +84,7 @@ const ChatInterface: React.FC = () => {
                 <ChatMessage 
                   key={index} 
                   message={message} 
-                  codeExecution={undefined} // We'll handle code execution in a separate PR
+                  codeExecution={message.role === 'assistant' && message.code_execution ? message.code_execution : undefined}
                 />
               );
             })}
