@@ -29,7 +29,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
   };
 
   return (
-    <div className="border-t p-4">
+    <div className="border-t border-gray-800 p-4">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center space-x-2">
           <Switch
@@ -37,7 +37,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
             checked={executeCode}
             onCheckedChange={setExecuteCode}
           />
-          <Label htmlFor="execute-code" className="text-sm">
+          <Label htmlFor="execute-code" className="text-sm text-gray-300">
             Execute Python code
           </Label>
         </div>
@@ -48,14 +48,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="min-h-[80px] flex-1"
+          className="min-h-[80px] flex-1 bg-gray-800 border-gray-700 text-gray-100 placeholder:text-gray-500"
           disabled={isLoading}
         />
         <div className="flex flex-col gap-2">
           <Button 
             onClick={handleSend} 
             disabled={!message.trim() || isLoading}
-            className="h-10 px-3"
+            className="h-10 px-3 bg-blue-600 hover:bg-blue-700"
           >
             <SendHorizontal size={18} />
           </Button>
@@ -64,7 +64,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
               variant="outline" 
               onClick={handleSend} 
               disabled={!message.trim() || isLoading}
-              className="h-10 px-3"
+              className="h-10 px-3 border-gray-700 text-gray-300 hover:bg-gray-700"
               title="Send and execute code"
             >
               <Play size={18} />
