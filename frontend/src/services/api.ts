@@ -10,8 +10,13 @@ const getApiBaseUrl = () => {
     url.username = '';
     url.password = '';
     
+    let baseUrl = url.toString();
+    if (baseUrl.endsWith('/')) {
+      baseUrl = baseUrl.slice(0, -1);
+    }
+    
     return { 
-      baseUrl: url.toString(), 
+      baseUrl, 
       credentials 
     };
   } catch (e) {
