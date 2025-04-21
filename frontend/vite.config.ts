@@ -10,7 +10,7 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: ["chat-ai-app-tunnel-xsbpohc4.devinapps.com", "chat-ai-app-tunnel-og4jydby.devinapps.com"],
+    allowedHosts: ["chat-ai-app-tunnel-xsbpohc4.devinapps.com", "chat-ai-app-tunnel-og4jydby.devinapps.com", "chat-ai-app-tunnel-6mtjwxqd.devinapps.com"],
     host: "0.0.0.0",
     strictPort: true,
   },
