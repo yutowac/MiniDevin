@@ -13,6 +13,9 @@ openai = "^1.75.0"
 python-dotenv = "^1.1.0"
 pydantic-settings = "^2.9.1"
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+
 
 [build-system]
 requires = ["poetry-core"]
