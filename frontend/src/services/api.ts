@@ -45,6 +45,8 @@ export const sendChatMessage = async (messages: Message[], executeCode: boolean 
   const response = await fetch(`${baseUrl}/api/chat`, {
     method: 'POST',
     headers: getHeaders(),
+    credentials: 'include',
+    mode: 'cors',
     body: JSON.stringify({
       messages,
       execute_code: executeCode,
@@ -52,6 +54,7 @@ export const sendChatMessage = async (messages: Message[], executeCode: boolean 
   });
 
   if (!response.ok) {
+    console.error('API error:', response.status, response.statusText);
     throw new Error(`API error: ${response.status}`);
   }
 
@@ -62,10 +65,13 @@ export const performFileOperation = async (operation: FileOperation): Promise<Fi
   const response = await fetch(`${baseUrl}/api/files`, {
     method: 'POST',
     headers: getHeaders(),
+    credentials: 'include',
+    mode: 'cors',
     body: JSON.stringify(operation),
   });
 
   if (!response.ok) {
+    console.error('API error:', response.status, response.statusText);
     throw new Error(`API error: ${response.status}`);
   }
 
@@ -76,9 +82,12 @@ export const listFiles = async (): Promise<string[]> => {
   const response = await fetch(`${baseUrl}/api/files`, {
     method: 'GET',
     headers: getHeaders(),
+    credentials: 'include',
+    mode: 'cors',
   });
 
   if (!response.ok) {
+    console.error('API error:', response.status, response.statusText);
     throw new Error(`API error: ${response.status}`);
   }
 
