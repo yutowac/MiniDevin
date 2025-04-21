@@ -9,5 +9,10 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    allowedHosts: ["chat-ai-app-tunnel-xsbpohc4.devinapps.com"],
+    host: "0.0.0.0",
+    strictPort: true,
+  },
 })
 

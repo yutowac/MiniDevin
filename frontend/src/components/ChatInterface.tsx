@@ -54,16 +54,19 @@ const ChatInterface: React.FC = () => {
     <div className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto">
         {messages.length === 0 ? (
-          <div className="h-full flex items-center justify-center text-slate-400">
+          <div className="h-full flex items-center justify-center text-gray-400">
             <div className="text-center max-w-md">
-              <h2 className="text-xl font-semibold mb-2">Welcome to Devin Chat</h2>
+              <h2 className="text-xl font-semibold mb-2">Welcome to Mini Devin</h2>
               <p>
                 Ask me anything and I'll respond using GPT-4.1. You can also have me execute Python code!
+              </p>
+              <p className="text-sm text-gray-500 mt-4">
+                A Devin-inspired AI coding assistant that helps you with programming tasks
               </p>
             </div>
           </div>
         ) : (
-          <div className="divide-y">
+          <div className="divide-y divide-gray-800">
             {messages.map((message, index) => {
               const nextMessage = messages[index + 1];
               const isAssistantWithCodeExec = 
