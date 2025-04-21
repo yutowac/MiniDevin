@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 from app.config import get_settings
 from app.models import Message, ChatRequest, ChatResponse, CodeExecutionResult
 from typing import List
@@ -11,30 +11,40 @@ import traceback
 class OpenAIService:
     def __init__(self):
         settings = get_settings()
-        openai.api_key = settings.openai_api_key
+        self.client = OpenAI(api_key=settings.openai_api_key)
 
     async def generate_response(self, request: ChatRequest) -> ChatResponse:
-        client = openai.OpenAI()
-        
-        response = client.chat.completions.create(
-            model="gpt-4-1106-preview",  # Using GPT-4.1 preview model
-            messages=[{"role": m.role, "content": m.content} for m in request.messages],
-            temperature=0.7,
-        )
-        
-        assistant_message = Message(
-            role="assistant",
-            content=response.choices[0].message.content
-        )
-        
-        code_execution = None
-        if request.execute_code:
-            code_execution = self._execute_python_code(assistant_message.content)
+        try:
+            response = self.client.chat.completions.create(
+                model="gpt-4-turbo-preview",  # Using the latest GPT-4 preview model
+                messages=[{"role": m.role, "content": m.content} for m in request.messages],
+                temperature=0.7,
+            )
             
-        return ChatResponse(
-            message=assistant_message,
-            code_execution=code_execution
-        )
+            assistant_message = Message(
+                role="assistant",
+                content=response.choices[0].message.content
+            )
+            
+            code_execution = None
+            if request.execute_code:
+                code_execution = self._execute_python_code(assistant_message.content)
+                
+            return ChatResponse(
+                message=assistant_message,
+                code_execution=code_execution
+            )
+        except Exception as e:
+            print(f"OpenAI API Error: {str(e)}")
+            
+            error_message = Message(
+                role="assistant",
+                content="I'm sorry, I encountered an error connecting to my AI service. Please try again in a moment."
+            )
+            
+            return ChatResponse(
+                message=error_message
+            )
     
     def _execute_python_code(self, content: str) -> CodeExecutionResult:
         import signal
