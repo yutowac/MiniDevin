@@ -1,13 +1,22 @@
 import { ChatResponse, FileOperation, FileOperationResponse, Message } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
+const API_USERNAME = import.meta.env.VITE_API_USERNAME;
+const API_PASSWORD = import.meta.env.VITE_API_PASSWORD;
 
 const baseUrl = API_URL.endsWith('/') ? API_URL.slice(0, -1) : API_URL;
 
 const getHeaders = (contentType = 'application/json') => {
-  return {
+  const headers: Record<string, string> = {
     'Content-Type': contentType
   };
+  
+  if (API_USERNAME && API_PASSWORD) {
+    const authString = `${API_USERNAME}:${API_PASSWORD}`;
+    headers['Authorization'] = `Basic ${btoa(authString)}`;
+  }
+  
+  return headers;
 };
 
 export const sendChatMessage = async (messages: Message[], executeCode: boolean = false): Promise<ChatResponse> => {
