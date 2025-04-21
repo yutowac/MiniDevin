@@ -1,43 +1,13 @@
 import { ChatResponse, FileOperation, FileOperationResponse, Message } from '../types';
 
-const getApiBaseUrl = () => {
-  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8001';
-  try {
-    const url = new URL(apiUrl);
-    const credentials = url.username && url.password ? 
-      { username: url.username, password: url.password } : null;
-    
-    url.username = '';
-    url.password = '';
-    
-    let baseUrl = url.toString();
-    if (baseUrl.endsWith('/')) {
-      baseUrl = baseUrl.slice(0, -1);
-    }
-    
-    return { 
-      baseUrl, 
-      credentials 
-    };
-  } catch (e) {
-    console.error('Error parsing API URL:', e);
-    return { baseUrl: apiUrl, credentials: null };
-  }
-};
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
 
-const { baseUrl, credentials } = getApiBaseUrl();
+const baseUrl = API_URL.endsWith('/') ? API_URL.slice(0, -1) : API_URL;
 
 const getHeaders = (contentType = 'application/json') => {
-  const headers: Record<string, string> = {
+  return {
     'Content-Type': contentType
   };
-  
-  if (credentials) {
-    const authString = `${credentials.username}:${credentials.password}`;
-    headers['Authorization'] = `Basic ${btoa(authString)}`;
-  }
-  
-  return headers;
 };
 
 export const sendChatMessage = async (messages: Message[], executeCode: boolean = false): Promise<ChatResponse> => {
