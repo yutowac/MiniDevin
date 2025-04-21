@@ -31,22 +31,22 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, codeExecution }) => 
         }
       }
       
-      return part ? <p key={index} className="whitespace-pre-wrap">{part}</p> : null;
+      return part ? <p key={index} className="whitespace-pre-wrap text-left">{part}</p> : null;
     });
   };
 
   return (
     <div className={`flex gap-3 p-4 ${message.role === 'assistant' ? 'bg-gray-800' : 'bg-gray-900'}`}>
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 flex items-center justify-center">
         <Avatar className={message.role === 'assistant' ? 'bg-blue-600' : 'bg-gray-700'}>
           {message.role === 'assistant' ? <Bot size={18} /> : <User size={18} />}
         </Avatar>
       </div>
-      <div className="flex-1">
-        <div className="font-medium text-gray-200">
+      <div className="flex-1 text-left">
+        <div className="font-medium text-gray-200 text-left">
           {message.role === 'assistant' ? 'Mini Devin' : 'You'}
         </div>
-        <div className="mt-1 text-gray-300">
+        <div className="mt-1 text-gray-300 text-left">
           {renderContent(message.content)}
         </div>
         
@@ -54,13 +54,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, codeExecution }) => 
         {codeExecution && (
           <Card className="mt-3 bg-gray-800 border-gray-700">
             <CardContent className="p-3">
-              <div className="text-sm font-medium mb-1 text-gray-300">Code Execution Result</div>
+              <div className="text-sm font-medium mb-1 text-gray-300 text-left">Code Execution Result</div>
               {codeExecution.error ? (
-                <div className="text-red-400 text-sm font-mono whitespace-pre-wrap bg-red-900/30 p-2 rounded border border-red-800">
+                <div className="text-red-400 text-sm font-mono whitespace-pre-wrap bg-red-900/30 p-2 rounded border border-red-800 text-left">
                   {codeExecution.error}
                 </div>
               ) : (
-                <div className="text-sm font-mono whitespace-pre-wrap bg-gray-900 p-2 rounded border border-gray-700 text-gray-300">
+                <div className="text-sm font-mono whitespace-pre-wrap bg-gray-900 p-2 rounded border border-gray-700 text-gray-300 text-left">
                   {codeExecution.output || 'No output'}
                 </div>
               )}
