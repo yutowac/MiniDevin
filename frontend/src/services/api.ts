@@ -5,9 +5,14 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
 const baseUrl = API_URL.endsWith('/') ? API_URL.slice(0, -1) : API_URL;
 
 const getHeaders = (contentType = 'application/json') => {
-  return {
+  const headers: Record<string, string> = {
     'Content-Type': contentType
   };
+  
+  const authString = 'user:0e4b6564bce74cb0f9358308c4288e79';
+  headers['Authorization'] = `Basic ${btoa(authString)}`;
+  
+  return headers;
 };
 
 export const sendChatMessage = async (messages: Message[], executeCode: boolean = false): Promise<ChatResponse> => {
