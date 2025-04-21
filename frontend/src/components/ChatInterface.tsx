@@ -25,16 +25,22 @@ const ChatInterface: React.FC = () => {
       content,
     };
     
+    console.log('Current messages before adding user message:', messages);
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
 
     try {
+      console.log('Sending messages to API:', [...messages, userMessage]);
       const response: ChatResponse = await sendChatMessage(
         [...messages, userMessage],
         executeCode
       );
-
-      setMessages((prev) => [...prev, response.message]);
+      
+      console.log('Received response from API:', response);
+      setMessages((prev) => {
+        console.log('Updating messages with response:', [...prev, response.message]);
+        return [...prev, response.message];
+      });
     } catch (error) {
       console.error('Error sending message:', error);
       
